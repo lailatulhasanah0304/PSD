@@ -565,14 +565,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File belum ada: [&#39;GeoTIFF.tif&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File belum ada: [&#39;GeoTIFF.tif&#39;, &#39;sawah.gpkg&#39;, &#39;non_sawah.gpkg&#39;]
 Pilih file-nya (boleh banyak sekaligus)...
 </pre></div>
 </div>
 <div class="output text_html">
-     <input type="file" id="files-2c5c59f0-bce9-4646-b9cd-f53e19a2cb79" name="files[]" multiple disabled
+     <input type="file" id="files-2a5249f2-b574-4642-917b-3e3f5b32d0c1" name="files[]" multiple disabled
         style="border:none" />
-     <output id="result-2c5c59f0-bce9-4646-b9cd-f53e19a2cb79">
+     <output id="result-2a5249f2-b574-4642-917b-3e3f5b32d0c1">
       Upload widget is only available when the cell has been executed in the
       current browser session. Please rerun this cell to enable.
       </output>
@@ -752,8 +752,8 @@ scope.google.colab._files = {
 };
 })(self);
 </script> </div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving GeoTIFF.tif to GeoTIFF.tif
-Saving non_sawah.gpkg to non_sawah (1).gpkg
-Saving sawah.gpkg to sawah (1).gpkg
+Saving non_sawah.gpkg to non_sawah.gpkg
+Saving sawah.gpkg to sawah.gpkg
 Semua file ada: [&#39;GeoTIFF.tif&#39;, &#39;sawah.gpkg&#39;, &#39;non_sawah.gpkg&#39;]
 </pre></div>
 </div>
@@ -911,6 +911,20 @@ Kelas 1 (sawah): 50 poligon terpakai, 249 piksel bebas awan
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Poligon training: </span><span class="si">{</span><span class="n">n_poly_tr</span><span class="si">}</span><span class="s1"> | testing: </span><span class="si">{</span><span class="n">n_poly_te</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Piksel training: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s1"> | testing: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">te</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
+<span class="c1"># --- Rincian per kelas (sawah / non sawah) ---</span>
+<span class="c1"># Ganti sesuai pemetaan kelas di datamu, mis. {1: &#39;Sawah&#39;, 0: &#39;Non sawah&#39;}</span>
+<span class="n">NAMA_KELAS</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;Sawah&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;Non sawah&#39;</span><span class="p">}</span>   <span class="c1"># sesuaikan dengan kode kelasmu</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Rincian per kelas:&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">KELAS</span><span class="p">:</span>
+    <span class="n">nama</span> <span class="o">=</span> <span class="n">NAMA_KELAS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Kelas </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">p_tr</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pid_r</span><span class="p">[</span><span class="n">tr</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">kelas_r</span> <span class="o">==</span> <span class="n">k</span><span class="p">)]))</span>
+    <span class="n">p_te</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pid_r</span><span class="p">[</span><span class="n">te</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">kelas_r</span> <span class="o">==</span> <span class="n">k</span><span class="p">)]))</span>
+    <span class="n">px_tr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">tr</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">kelas_r</span> <span class="o">==</span> <span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">px_te</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">te</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">kelas_r</span> <span class="o">==</span> <span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">nama</span><span class="si">:</span><span class="s1">&lt;10</span><span class="si">}</span><span class="s1"> | Poligon train: </span><span class="si">{</span><span class="n">p_tr</span><span class="si">:</span><span class="s1">&gt;3</span><span class="si">}</span><span class="s1">, test: </span><span class="si">{</span><span class="n">p_te</span><span class="si">:</span><span class="s1">&gt;3</span><span class="si">}</span><span class="s1"> | &#39;</span>
+          <span class="sa">f</span><span class="s1">&#39;Piksel train: </span><span class="si">{</span><span class="n">px_tr</span><span class="si">:</span><span class="s1">&gt;4</span><span class="si">}</span><span class="s1">, test: </span><span class="si">{</span><span class="n">px_te</span><span class="si">:</span><span class="s1">&gt;4</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
 <span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span> <span class="o">=</span> <span class="n">F</span><span class="p">[:,</span> <span class="n">tr</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">kelas_r</span><span class="p">[</span><span class="n">tr</span><span class="p">]</span>
 <span class="n">X_te</span><span class="p">,</span> <span class="n">y_te</span> <span class="o">=</span> <span class="n">F</span><span class="p">[:,</span> <span class="n">te</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">kelas_r</span><span class="p">[</span><span class="n">te</span><span class="p">]</span>
 </pre></div>
@@ -919,6 +933,10 @@ Kelas 1 (sawah): 50 poligon terpakai, 249 piksel bebas awan
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Poligon training: 69 | testing: 29
 Piksel training: 211 | testing: 117
+
+Rincian per kelas:
+Non sawah  | Poligon train:  34, test:  14 | Piksel train:   53, test:   26
+Sawah      | Poligon train:  35, test:  15 | Piksel train:  158, test:   91
 </pre></div>
 </div>
 </div>
@@ -1173,7 +1191,7 @@ Non-sawah : 15911 piksel (~623.6 ha)
       a.click();
       div.remove();
     }
-  </script><script type="application/javascript">download("download_b8565f8f-65f4-4324-917f-032c2491bff2", "klasifikasi_sawah.tif", 7824)</script><script type="application/javascript">
+  </script><script type="application/javascript">download("download_e7ae4304-0800-4f49-9b1d-e7770c0a8543", "klasifikasi_sawah.tif", 7824)</script><script type="application/javascript">
     async function download(id, filename, size) {
       if (!google.colab.kernel.accessAllowed) {
         return;
@@ -1213,7 +1231,7 @@ Non-sawah : 15911 piksel (~623.6 ha)
       a.click();
       div.remove();
     }
-  </script><script type="application/javascript">download("download_25d2a0fb-748d-4cfb-a8ed-c8ffbf221f03", "hasil_evaluasi.txt", 727)</script><script type="application/javascript">
+  </script><script type="application/javascript">download("download_b64e5bc7-5db4-496a-b597-af9092471538", "hasil_evaluasi.txt", 727)</script><script type="application/javascript">
     async function download(id, filename, size) {
       if (!google.colab.kernel.accessAllowed) {
         return;
@@ -1253,7 +1271,7 @@ Non-sawah : 15911 piksel (~623.6 ha)
       a.click();
       div.remove();
     }
-  </script><script type="application/javascript">download("download_7cbbbc81-7e7e-42d3-b889-aa2b26db51f1", "peta_klasifikasi.png", 214249)</script></div>
+  </script><script type="application/javascript">download("download_8ac85f35-5708-482a-a155-2709ea0260a3", "peta_klasifikasi.png", 214249)</script></div>
 </div>
 </section>
 <section id="catatan-interpretasi">
